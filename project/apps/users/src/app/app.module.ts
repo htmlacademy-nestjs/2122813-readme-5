@@ -3,7 +3,7 @@ import { BlogUserModule } from './blog-user/blog-user.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [],
+  imports: [AuthModule, BlogUserModule],
   controllers: [],
   providers: [],
 })
