@@ -24,14 +24,14 @@ export class BlogUserMemoryRepository implements CRUDRepository<BlogUserEntity, 
   }
 
   public async findByEmail(email: string): Promise<User | null> {
-    const existUser = Object.values(this.repository)
+    const existedUser = Object.values(this.repository)
       .find((userItem) => userItem.email === email);
 
-    if (!existUser) {
+    if (!existedUser) {
       return null;
     }
 
-    return { ...existUser};
+    return { ...existedUser};
   }
 
   public async destroy(id: string): Promise<void> {
