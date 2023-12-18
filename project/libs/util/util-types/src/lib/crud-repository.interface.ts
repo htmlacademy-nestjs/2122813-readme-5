@@ -1,6 +1,8 @@
-export interface CRUDRepository<E, I extends string | number, R> {
-  findById(id: I): Promise<R | null>;
-  create(item: E): Promise<R>;
-  update(id: I, item: E): Promise<R>;
-  destroy(id: I): Promise<void>;
+import { Entity } from './entity.interface';
+
+export interface CRUDRepository<T extends Entity<string>> {
+  findById: (uuid: T['id']) => Promise<T | null>;
+  save: (entity: T) => Promise<T>;
+  update: (uuid: T['id'], entity: T) => Promise<T>;
+  deleteById: (uuid: T['id']) => Promise<void>;
 }

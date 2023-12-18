@@ -32,7 +32,7 @@ export class AuthService {
       .setPassword(password);
 
     return this.blogUserRepository
-      .create(userEntity);
+      .save(userEntity);
   }
 
   public async verifyUser(dto: LoginUserDto) {
@@ -43,7 +43,7 @@ export class AuthService {
       throw new NotFoundException(AuthError.AUTH_USER_NOT_FOUND);
     }
 
-    const blogUserEntity = new BlogUserEntity(existedUser);
+    const blogUserEntity = new BlogUserEntity(existedUser);/*Возможно лишнее*/
     if (!await blogUserEntity.comparePassword(password)) {
       throw new UnauthorizedException(AuthError.AUTH_USER_PASSWORD_WRONG);
     }
