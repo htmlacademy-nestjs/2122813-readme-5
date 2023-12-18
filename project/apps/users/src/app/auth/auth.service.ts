@@ -43,12 +43,11 @@ export class AuthService {
       throw new NotFoundException(AuthError.AUTH_USER_NOT_FOUND);
     }
 
-    const blogUserEntity = new BlogUserEntity(existedUser);/*Возможно лишнее*/
-    if (!await blogUserEntity.comparePassword(password)) {
+    if (!await existedUser.comparePassword(password)) {
       throw new UnauthorizedException(AuthError.AUTH_USER_PASSWORD_WRONG);
     }
 
-    return blogUserEntity.toObject();
+    return existedUser.toObject();
   }
 
   public async getUser(id: string) {
