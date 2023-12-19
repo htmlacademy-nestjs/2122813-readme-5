@@ -7,7 +7,7 @@ const ENVIRONMENTS = ['development', 'production', 'stage'] as const;
 
 type Environment = typeof ENVIRONMENTS[number];
 
-export interface ApplicationConfig {
+export interface AppConfig {
   environment: string;
   port: number;
 }
@@ -17,15 +17,15 @@ const validationSchema = Joi.object({
   port: Joi.number().port().default(DEFAULT_PORT),
 });
 
-function validateConfig(config: ApplicationConfig): void {
+function validateConfig(config: AppConfig): void {
   const { error } = validationSchema.validate(config, { abortEarly: true });
   if (error) {
     throw new Error(`[Application Config Validation Error]: ${error.message}`);
   }
 }
 
-function getConfig(): ApplicationConfig {
-  const config: ApplicationConfig = {
+function getConfig(): AppConfig {
+  const config: AppConfig = {
     environment: process.env.NODE_ENV as Environment,
     port: parseInt(process.env.PORT || `${DEFAULT_PORT}`, 10),
   };
