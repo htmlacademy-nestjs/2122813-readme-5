@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
-import { Entity } from '@project/util/util-types';
+import { Entity, EntityIdType } from '@project/util/util-types';
 import { CRUDRepository } from '@project/util/util-types';
 
-export abstract class BaseMemoryRepository<T extends Entity<string>>
+export abstract class BaseMemoryRepository<T extends Entity<EntityIdType>>
   implements CRUDRepository<T>
 {
   protected entities: Map<T['id'], T> = new Map();

@@ -47,10 +47,16 @@ export class AuthService {
       throw new UnauthorizedException(AuthError.AUTH_USER_PASSWORD_WRONG);
     }
 
-    return existedUser.toObject();
+    return existedUser;
   }
 
   public async getUser(id: string) {
-    return this.blogUserRepository.findById(id);
+    const existUser = await this.blogUserRepository.findById(id);
+
+    if (! existUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    return existUser;
   }
 }
