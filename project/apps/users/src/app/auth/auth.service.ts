@@ -32,7 +32,7 @@ export class AuthService {
       .setPassword(password);
 
     return this.blogUserRepository
-      .create(userEntity);
+      .save(userEntity);
   }
 
   public async verifyUser(dto: LoginUserDto) {
@@ -43,15 +43,20 @@ export class AuthService {
       throw new NotFoundException(AuthError.AUTH_USER_NOT_FOUND);
     }
 
-    const blogUserEntity = new BlogUserEntity(existedUser);
-    if (!await blogUserEntity.comparePassword(password)) {
+    if (!await existedUser.comparePassword(password)) {
       throw new UnauthorizedException(AuthError.AUTH_USER_PASSWORD_WRONG);
     }
 
-    return blogUserEntity.toObject();
+    return existedUser;
   }
 
   public async getUser(id: string) {
-    return this.blogUserRepository.findById(id);
+    const existUser = await this.blogUserRepository.findById(id);
+
+    if (! existUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    return existUser;
   }
 }
