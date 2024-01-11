@@ -1,7 +1,7 @@
 import { Entity } from '@project/util/util-types';
 import { Type } from '@project/shared/app-types';
 
-export class BlogTypeEntity implements Type, Entity<string> {
+export class BlogTypeEntity implements Type, Entity<string, Type> {
   public typeId: number;
   public title: string;
 
@@ -18,10 +18,14 @@ export class BlogTypeEntity implements Type, Entity<string> {
     this.typeId = entity.typeId;
   }
 
-  public toPOJO(): Record<string, unknown> {
+  public toPOJO(): Type {
     return {
-      id: this.typeId,
+      typeId: this.typeId,
       title: this.title,
     }
+  }
+
+  static fromObject(data: Type): BlogTypeEntity {
+    return new BlogTypeEntity(data);
   }
 }
