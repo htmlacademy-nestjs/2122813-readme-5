@@ -1,11 +1,6 @@
-import { Entity, EntityIdType, DefaultPojoType } from './entity.interface';
-
-export interface CRUDRepository<
-EntityType extends Entity<EntityIdType, PojoType>,
-PojoType = DefaultPojoType
-> {
-  findById: (uuid: EntityType['id']) => Promise<EntityType | null>;
-  save: (entity: EntityType) => Promise<EntityType>;
-  update: (uuid: EntityType['id'], entity: EntityType) => Promise<EntityType>;
-  deleteById: (uuid: EntityType['id']) => Promise<void>;
+export interface CRUDRepository<E, I , R> {
+  findById(id: I): Promise<R | null>;
+  create(item: E): Promise<R>;
+  update(id: I, item: E): Promise<R>;
+  destroy(id: I): Promise<void>;
 }

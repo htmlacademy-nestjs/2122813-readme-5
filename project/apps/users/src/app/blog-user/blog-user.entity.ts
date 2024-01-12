@@ -1,10 +1,9 @@
 import { User } from '@project/shared/app-types';
-import { Entity, EntityIdType } from '@project/util/util-types';
 import { compare, genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from './blog-user.constant';
 
-export class BlogUserEntity implements User, Entity<EntityIdType> {
-  public id?: string;
+export class BlogUserEntity implements User {
+  public _id: string;
   public avatar: string;
   public email: string;
   public name: string;
@@ -14,9 +13,9 @@ export class BlogUserEntity implements User, Entity<EntityIdType> {
     this.fillEntity(blogUser);
   }
 
-  public toPOJO() {
+  public toObject() {
     return {
-      _id: this.id,
+      _id: this._id,
       email: this.email,
       name: this.name,
       avatar: this.avatar,
@@ -25,7 +24,7 @@ export class BlogUserEntity implements User, Entity<EntityIdType> {
   }
 
   public fillEntity(blogUser: User) {
-    this.id = blogUser.id;
+    this._id = blogUser._id;
     this.avatar = blogUser.avatar;
     this.email = blogUser.email;
     this.name = blogUser.name;
@@ -40,9 +39,5 @@ export class BlogUserEntity implements User, Entity<EntityIdType> {
 
   public async comparePassword(password: string): Promise<boolean> {
     return compare(password, this.passwordHash);
-  }
-
-  static fromObject(data: User): BlogUserEntity {
-    return new BlogUserEntity(data);
   }
 }

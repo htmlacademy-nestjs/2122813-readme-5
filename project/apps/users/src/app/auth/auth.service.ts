@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { BlogUserMemoryRepository } from '../blog-user/blog-user-memory.repository';
+import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
@@ -8,7 +8,7 @@ import { AuthError } from './auth.constant';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly blogUserRepository: BlogUserMemoryRepository
+    private readonly blogUserRepository: BlogUserRepository
   ) {}
 
   public async register(dto: CreateUserDto) {
@@ -21,10 +21,10 @@ export class AuthService {
       passwordHash: ''
     };
 
-    const existedUser = await this.blogUserRepository
+    const existUser = await this.blogUserRepository
       .findByEmail(email);
 
-    if (existedUser) {
+    if (existUser) {
       throw new ConflictException(AuthError.AUTH_USER_EXISTS);
     }
 
@@ -32,31 +32,26 @@ export class AuthService {
       .setPassword(password);
 
     return this.blogUserRepository
-      .save(userEntity);
+      .create(userEntity);
   }
 
   public async verifyUser(dto: LoginUserDto) {
     const {email, password} = dto;
-    const existedUser = await this.blogUserRepository.findByEmail(email);
+    const existUser = await this.blogUserRepository.findByEmail(email);
 
-    if (!existedUser) {
+    if (!existUser) {
       throw new NotFoundException(AuthError.AUTH_USER_NOT_FOUND);
     }
 
-    if (!await existedUser.comparePassword(password)) {
+    const blogUserEntity = new BlogUserEntity(existUser);
+    if (!await blogUserEntity.comparePassword(password)) {
       throw new UnauthorizedException(AuthError.AUTH_USER_PASSWORD_WRONG);
     }
 
-    return existedUser;
+    return blogUserEntity.toObject();
   }
 
   public async getUser(id: string) {
-    const existUser = await this.blogUserRepository.findById(id);
-
-    if (! existUser) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
-    return existUser;
+    return this.blogUserRepository.findById(id);
   }
 }

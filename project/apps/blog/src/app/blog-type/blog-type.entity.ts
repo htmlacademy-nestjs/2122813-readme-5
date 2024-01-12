@@ -1,16 +1,12 @@
 import { Entity } from '@project/util/util-types';
 import { Type } from '@project/shared/app-types';
 
-export class BlogTypeEntity implements Type, Entity<string, Type> {
+export class BlogTypeEntity implements Entity<BlogTypeEntity>, Type {
   public typeId: number;
   public title: string;
 
-  constructor(data: Type) {
-    if (!data.title) {
-      throw new Error('Type title is required');
-    }
-
-    this.fillEntity(data);
+  constructor(type: Type) {
+    this.fillEntity(type);
   }
 
   public fillEntity(entity: Type) {
@@ -18,14 +14,7 @@ export class BlogTypeEntity implements Type, Entity<string, Type> {
     this.typeId = entity.typeId;
   }
 
-  public toPOJO(): Type {
-    return {
-      typeId: this.typeId,
-      title: this.title,
-    }
-  }
-
-  static fromObject(data: Type): BlogTypeEntity {
-    return new BlogTypeEntity(data);
+  public toObject(): BlogTypeEntity {
+    return { ...this }
   }
 }

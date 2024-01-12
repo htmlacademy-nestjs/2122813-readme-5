@@ -7,7 +7,7 @@ export class LoggedUserRdo {
     example: '13'
   })
   @Expose({name: '_id'})
-  /*@Transform(({obj}) => obj._id.toString())*/
+  @Transform(({obj}) => obj._id.toString())
   public id: string;
 
   @ApiProperty({
