@@ -3,3 +3,4 @@ export * from './lib/type.interface';
 export * from './lib/comment.interface';
 export * from './lib/post.interface';
 export * from './lib/file.interface';
+export * from './lib/token-payload.interface';
