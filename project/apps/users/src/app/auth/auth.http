@@ -1,5 +1,5 @@
 # Create a new user
-POST http://localhost:3000/api/auth/register HTTP/1.1
+POST http://localhost:3001/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
@@ -11,13 +11,13 @@ Content-Type: application/json
 ###
 
 # Get user by ID
-GET http://localhost:3000/api/auth/6582d13b839eca516d695a99 HTTP/1.1
+GET http://localhost:3001/api/auth/6582d13b839eca516d695a99 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGMyOTFhZTE0YjJiYTJmYTkzYzlmOWUiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImF2YXRhciI6IiIsImlhdCI6MTY5Mjc4MDc4MiwiZXhwIjoxNjk1MzcyNzgyfQ.sUlYtrXlZ0Ve9Bgnx8ZBxAKACPNdUeDk7m0e7mUDNME
 
 ###
 
 # Login user by email and password
-POST http://localhost:3000/api/auth/login HTTP/1.1
+POST http://localhost:3001/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
