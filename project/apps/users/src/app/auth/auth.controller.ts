@@ -8,12 +8,14 @@ import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { LoginUserDto } from './dto/login-user.dto';
 import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly notifyService: NotifyService,
   ) {}
 
   @ApiResponse({
@@ -23,6 +25,8 @@ export class AuthController {
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
+    const { email, name } = newUser;
+    await this.notifyService.registerSubscriber({ email, name })
     return fillObject(UserRdo, newUser);
   }
 
