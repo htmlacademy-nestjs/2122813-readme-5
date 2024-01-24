@@ -2,7 +2,7 @@ import { Type } from './type.interface';
 import { Comment } from './comment.interface';
 
 export interface Post {
-  id?: number;
+  postId?: number;
   title?: string;
   link?: string;
   announce?: string;
@@ -11,7 +11,7 @@ export interface Post {
   photo?: string;
   userId: string;
   type: Type;
-  comments: Comment[];
+  comments?: Comment[];
   createdAt?: Date;
   publishAt?: Date;
 }
