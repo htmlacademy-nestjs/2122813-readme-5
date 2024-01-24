@@ -6,5 +6,5 @@ export class CreatePostDto {
   public author?: string;
   public photo?: string;
   public userId: string;
-  public type: number;
+  public type?: number;
 }
