@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AuthError } from '../auth.constant';
+import { AuthError } from '../../auth/auth.constant';
 import { IsEmail, IsString } from 'class-validator';
 
 export class CreateUserDto {
