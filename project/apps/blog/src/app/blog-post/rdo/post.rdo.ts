@@ -1,4 +1,4 @@
-import { Comment } from '@project/shared/app-types';
+import { Comment, Type } from '@project/shared/app-types';
 import { Expose } from 'class-transformer';
 
 export class PostRdo {
@@ -24,14 +24,14 @@ export class PostRdo {
   public photo?: string;
 
   @Expose()
-  public publishAt: string;
+  public publishAt?: string;
 
   @Expose()
   public userId: string;
 
-  // @Expose()
-  // public type: Type;
+  @Expose()
+  public type: Type;
 
   @Expose()
-  public comments: Comment[]
+  public comments?: Comment[]
 }

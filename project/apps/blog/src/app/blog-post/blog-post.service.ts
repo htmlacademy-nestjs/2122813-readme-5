@@ -29,7 +29,7 @@ export class BlogPostService {
     return this.blogPostRepository.find(query);
   }
 
-  async updatePost(_id: number, _dto: UpdatePostDto): Promise<Post> {
-    throw new Error('Not implemented…');
+  async updatePost(id: number, dto: UpdatePostDto): Promise<Post> {
+    return this.blogPostRepository.update(id, dto);
   }
 }

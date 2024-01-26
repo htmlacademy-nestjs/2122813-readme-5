@@ -2,7 +2,7 @@ import { Type } from './type.interface';
 import { Comment } from './comment.interface';
 
 export interface Post {
-  postId?: number;
+  id?: number;
   title?: string;
   link?: string;
   announce?: string;

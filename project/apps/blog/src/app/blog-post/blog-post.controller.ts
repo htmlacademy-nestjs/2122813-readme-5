@@ -39,6 +39,6 @@ export class BlogPostController {
   @Patch('/:id')
   async update(@Param('id') id: number, @Body() dto: UpdatePostDto) {
     const updatedPost = await this.blogPostService.updatePost(id, dto);
-    return fillObject(PostRdo, updatedPost)
+    return fillObject(PostRdo, updatedPost);
   }
 }

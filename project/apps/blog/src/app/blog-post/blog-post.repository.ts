@@ -18,7 +18,7 @@ export class BlogPostRepository implements CRUDRepository<BlogPostEntity, number
           connect: []
         },
         type: {
-          connect: entityData.type
+          connect: { typeId: entityData.type.typeId }
         }
       },
       include: {
@@ -48,10 +48,11 @@ export class BlogPostRepository implements CRUDRepository<BlogPostEntity, number
     });
   }
 
-  public find({limit, type, sortDirection, page}: PostQuery): Promise<Post[]> {
+  public find({limit, userId, type, sortDirection, page}: PostQuery): Promise<Post[]> {
     return this.prisma.post.findMany({
       where: {
-        typeId: type
+        typeId: type,
+        userId
       },
       take: limit,
       include: {
@@ -65,7 +66,16 @@ export class BlogPostRepository implements CRUDRepository<BlogPostEntity, number
     });
   }
 
-  public update(_id: number, _item: BlogPostEntity): Promise<Post> {
-    return Promise.resolve(undefined);
+  public update(id: number, item): Promise<Post> {
+    return this.prisma.post.update({
+      where: {
+        postId: id
+      },
+      data: { ...item, postId: id },
+      include: {
+        comments: true,
+        type: true,
+      }
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { IsIn, IsNumber, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { DEFAULT_POST_COUNT_LIMIT, DEFAULT_SORT_DIRECTION } from '../blog-post.constant';
+import { DEFAULT_POST_COUNT_LIMIT, DEFAULT_SORT_DIRECTION } from '../blog-comment.constant';
 
 export class PostQuery {
   @Transform(({ value } ) => +value || DEFAULT_POST_COUNT_LIMIT)
@@ -10,11 +10,7 @@ export class PostQuery {
 
   @Transform(({ value }) => +value)
   @IsNumber()
-  @IsOptional()
-  public type?: number;
-
-  @IsOptional()
-  public userId?: string;
+  public postId?: number;
 
   @IsIn(['asc', 'desc'])
   @IsOptional()
