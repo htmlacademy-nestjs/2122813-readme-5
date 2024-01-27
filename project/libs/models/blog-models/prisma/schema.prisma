@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output = "../../../../node_modules/.prisma/client"
+  output   = "../../../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -8,32 +8,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  postId      Int       @id @default(autoincrement()) @map("post_id")
-  title       String    @default("")
-  link        String    @default("")
-  announce    String    @default("")
-  description String    @default("")
-  author      String    @default("")
-  photo       String    @default("")
-  tags        String[]
-  createdAt   DateTime  @default(now()) @map("created_at")
-  publishAt   DateTime  @updatedAt @map("published_at")
-  userId      String?   @map("user_id")
-  type        Type?     @relation(fields: [typeId], references: [typeId])
-  typeId      Int?      @map("type_id")
-  comments    Comment[]
-  Like        Like[]
-
-  @@map("posts")
+enum PostType {
+  video
+  text
+  quote
+  photo
+  link
 }
 
-model Type {
-  typeId Int    @id @default(autoincrement()) @map("type_id")
-  title  String
-  posts  Post[]
-
-  @@map("types")
+model Post {
+  postId       Int       @id @default(autoincrement()) @map("post_id")
+  userId       String    @map("user_id")
+  originPostId Int?      @map("origin_post_id")
+  originUserId String?   @map("origin_user_id")
+  title        String?   @default("")
+  link         String?   @default("")
+  announce     String?   @default("")
+  description  String?   @default("")
+  author       String?   @default("")
+  photo        String?   @default("")
+  tags         String[]
+  createdAt    DateTime  @default(now()) @map("created_at")
+  publishAt    DateTime?  @updatedAt @map("published_at")
+  type         PostType
+  comments     Comment[]
+  likes        Like[]
+  @@map("posts")
 }
 
 model Comment {
@@ -44,7 +44,6 @@ model Comment {
   postId    Int      @map("post_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
   @@map("comments")
 }
 
@@ -52,9 +51,8 @@ model Like {
   likeId    Int      @id @default(autoincrement()) @map("like_id")
   post      Post     @relation(fields: [postId], references: [postId], onDelete: Cascade)
   postId    Int      @map("post_id")
-  userId    Int      @map("user_id")
+  userId    String   @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
   @@map("likes")
 }

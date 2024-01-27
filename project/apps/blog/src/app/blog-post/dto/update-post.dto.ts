@@ -1,4 +1,4 @@
-import { Type } from "@project/shared/app-types";
+import { PostType } from "@project/shared/app-types";
 
 export class UpdatePostDto {
   public title?: string;
@@ -7,7 +7,7 @@ export class UpdatePostDto {
   public announce?: string;
   public author?: string;
   public photo?: string;
-  public type: Type;
+  public type: PostType;
   public publishAt?: Date;
   public userId: string;
 }

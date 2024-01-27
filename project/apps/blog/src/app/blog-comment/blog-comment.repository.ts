@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CRUDRepository } from '@project/util/util-types';
 import { BlogCommentEntity } from './blog-comment.entity';
 import { Comment } from '@project/shared/app-types';
@@ -10,7 +10,6 @@ export class BlogCommentRepository implements CRUDRepository<BlogCommentEntity, 
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: BlogCommentEntity): Promise<Comment> {
-    Logger.log(item.toObject())
     return this.prisma.comment.create({
       data: { ...item.toObject() }
     });

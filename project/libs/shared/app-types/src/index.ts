@@ -1,5 +1,5 @@
 export * from './lib/user.interface';
-export * from './lib/type.interface';
+export * from './lib/type.enum';
 export * from './lib/comment.interface';
 export * from './lib/post.interface';
 export * from './lib/file.interface';

@@ -1,19 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { BlogPostRepository } from './blog-post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
-import { Post } from '@project/shared/app-types';
-import { BlogPostEntity } from './blog-post.entity';
+import { PostType } from '@project/shared/app-types';
+import { BlogPostLinkEntity, BlogPostPhotoEntity, BlogPostQuoteEntity, BlogPostTextEntity, BlogPostVideoEntity  } from './blog-post.entity';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostQuery } from './query/post.query';
 
+import { Post as BlogPostType } from '@prisma/client';
+
+const entity = {
+  [PostType.Video]: BlogPostVideoEntity,
+  [PostType.Text]: BlogPostTextEntity,
+  [PostType.Link]: BlogPostLinkEntity,
+  [PostType.Photo]: BlogPostPhotoEntity,
+  [PostType.Quote]: BlogPostQuoteEntity
+}
 @Injectable()
 export class BlogPostService {
   constructor(
     private readonly blogPostRepository: BlogPostRepository,
   ) {}
 
-  async createPost(dto: CreatePostDto): Promise<Post> {
-    const postEntity = new BlogPostEntity({ ...dto, type: { typeId: dto.type, title: '' }, comments: [] });
+  async createPost(dto: CreatePostDto): Promise<BlogPostType> {
+    Logger.log(dto);
+    const postEntity = new entity[dto.type]({ ...dto, comments: [] });
     return this.blogPostRepository.create(postEntity);
   }
 
@@ -21,15 +31,16 @@ export class BlogPostService {
     this.blogPostRepository.destroy(id);
   }
 
-  async getPost(id: number): Promise<Post> {
+  async getPost(id: number): Promise<BlogPostType> {
     return this.blogPostRepository.findById(id);
   }
 
-  async getPosts(query: PostQuery): Promise<Post[]> {
+  async getPosts(query: PostQuery): Promise<BlogPostType[]> {
     return this.blogPostRepository.find(query);
   }
 
-  async updatePost(id: number, dto: UpdatePostDto): Promise<Post> {
+  async updatePost(id: number, dto: UpdatePostDto): Promise<BlogPostType> {
     return this.blogPostRepository.update(id, dto);
   }
+
 }

@@ -11,7 +11,7 @@ Content-Type: application/json
 ###
 
 # Delete comment by id
-DELETE http://localhost:3005/api/comments/2 HTTP/1.1
+DELETE http://localhost:3005/api/comments/3 HTTP/1.1
 
 ###
 
@@ -21,7 +21,7 @@ GET http://localhost:3005/api/comments?sortDirection=desc&postId=2&limit=50&page
 ###
 
 # Get comment by id
-GET http://localhost:3005/api/comments/1 HTTP/1.1
+GET http://localhost:3005/api/comments/2 HTTP/1.1
 
 ###
 
