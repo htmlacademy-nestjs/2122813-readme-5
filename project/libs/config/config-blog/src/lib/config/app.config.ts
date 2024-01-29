@@ -19,7 +19,7 @@ export default registerAs('application', (): ApplicationConfig => {
   const { error } = validationSchema.validate(config, { abortEarly: true });
   if (error) {
     throw new Error(
-      `[Application Config]: Environments validation failed. Please check .env file.`,
+      `[Application Config]: Environments validation failed. Please check .env file. Error message: ${error.message}`,
     );
   }
   return config;

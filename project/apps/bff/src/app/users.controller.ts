@@ -1,6 +1,6 @@
 import { Body, Controller, Post, Req, UseFilters } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { ApplicationServiceURL } from './app.config';
+import { ApplicationServiceURL } from './app.constant';
 import { Request } from 'express';
 import { LoginUserDto } from './dto/login-user.dto';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';

@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, UnauthorizedException, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
-import { AuthError } from './auth.constant';
+import { AuthUserMessage } from './auth.constant';
 import { User } from '@project/shared/app-types';
 import { jwtConfig } from '@project/config/config-users';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
@@ -15,7 +15,6 @@ import * as crypto from 'node:crypto';
 export class AuthService {
   constructor(
     private readonly blogUserRepository: BlogUserRepository,
-    private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
     @Inject (jwtConfig.KEY) private readonly jwtOptions: ConfigType<typeof jwtConfig>,
     private readonly refreshTokenService: RefreshTokenService,
@@ -25,11 +24,11 @@ export class AuthService {
     const {email, password} = dto;
     const existUser = await this.blogUserRepository.findByEmail(email);
     if (!existUser) {
-      throw new NotFoundException(AuthError.AUTH_USER_NOT_FOUND);
+      throw new NotFoundException(AuthUserMessage.NotFound);
     }
     const blogUserEntity = new BlogUserEntity(existUser);
     if (!await blogUserEntity.comparePassword(password)) {
-      throw new UnauthorizedException(AuthError.AUTH_USER_PASSWORD_WRONG);
+      throw new UnauthorizedException(AuthUserMessage.WrongPassword);
     }
     return blogUserEntity.toObject();
   }

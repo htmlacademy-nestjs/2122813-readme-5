@@ -6,7 +6,7 @@ export enum CommentTextLength {
   Max = 300
 }
 
-export enum CommentsMessages {
+export enum CommentsMessage {
   Add = 'Comment added',
   Remove = 'Comment removed',
   Update = 'Comment updated',

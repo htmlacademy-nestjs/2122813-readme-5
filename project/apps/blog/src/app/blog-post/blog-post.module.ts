@@ -8,13 +8,13 @@ import { ConfigService } from '@nestjs/config';
 import { JwtAccessStrategy, getJwtOptions } from '@project/util/util-core';
 import { BlogNotifyModule } from "../blog-notify/blog-notify.module";
 import { CheckAuthGuard } from '../guards/check-auth.guard';
-import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from "../app.constant";
+import { HttpClientParam } from "../app.constant";
 
 @Module({
   imports: [
     HttpModule.register({
-      timeout: HTTP_CLIENT_TIMEOUT,
-      maxRedirects: HTTP_CLIENT_MAX_REDIRECTS,
+      timeout: HttpClientParam.Timeout,
+      maxRedirects: HttpClientParam.MaxRedirect,
     }),
     JwtModule.registerAsync({
       inject: [ConfigService],

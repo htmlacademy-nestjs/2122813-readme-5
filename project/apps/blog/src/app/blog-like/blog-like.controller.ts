@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LikesService } from './blog-like.service';
 import { fillObject } from '@project/util/util-core';
 import { LikeRdo } from './rdo/blog-like.rdo';
-import { LikesMessages } from './blog-like.constant';
+import { LikesMessage } from './blog-like.constant';
 import { CheckAuthGuard } from '../guards/check-auth.guard';
 import { RequestWithTokenPayload } from '@project/shared/app-types';
 
@@ -15,7 +15,7 @@ export class LikesController {
   ) {}
   @ApiResponse({
     status: HttpStatus.OK,
-    description: LikesMessages.Add
+    description: LikesMessage.Add
   })
   @UseGuards(CheckAuthGuard)
   @Post('/:postId')
@@ -26,7 +26,7 @@ export class LikesController {
 
   @ApiResponse({
     status: HttpStatus.OK,
-    description: LikesMessages.Show
+    description: LikesMessage.Show
   })
   @Get('/:postId')
   public async getLikes(@Param('postId') id: number) {

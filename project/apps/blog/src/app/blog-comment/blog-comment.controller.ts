@@ -6,7 +6,7 @@ import { CommentRdo } from './rdo/comment.rdo';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentQuery } from './query/comment.query';
-import { CommentsMessages } from './blog-comment.constant';
+import { CommentsMessage } from './blog-comment.constant';
 import { CreateCommentValidationPipe } from './pipes/create-comment-validation.pipe';
 import { UpdateCommentValidationPipe } from './pipes/update-comment-validation.pipe';
 import { CheckAuthGuard } from '../guards/check-auth.guard';
@@ -21,7 +21,7 @@ export class BlogCommentController {
   @ApiResponse({
     type: CommentRdo,
     status: HttpStatus.OK,
-    description: CommentsMessages.Show
+    description: CommentsMessage.Show
   })
   @Get('/:id')
   async show(@Param('id') id: number) {
@@ -31,7 +31,7 @@ export class BlogCommentController {
   @ApiResponse({
     type: CommentRdo,
     status: HttpStatus.OK,
-    description: CommentsMessages.ShowAll
+    description: CommentsMessage.ShowAll
   })
   @Get('/')
   async index(@Query() query: CommentQuery) {
@@ -41,7 +41,7 @@ export class BlogCommentController {
   @ApiResponse({
     type: CommentRdo,
     status: HttpStatus.CREATED,
-    description: CommentsMessages.Add
+    description: CommentsMessage.Add
   })
   @UseGuards(CheckAuthGuard)
   @Post('/')
@@ -52,7 +52,7 @@ export class BlogCommentController {
 
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: CommentsMessages.Remove
+    description: CommentsMessage.Remove
   })
   @UseGuards(CheckAuthGuard)
   @Delete('/:id')
@@ -64,7 +64,7 @@ export class BlogCommentController {
   @ApiResponse({
     type: CommentRdo,
     status: HttpStatus.OK,
-    description: CommentsMessages.Update
+    description: CommentsMessage.Update
   })
   @UseGuards(CheckAuthGuard)
   @Patch('/:id')

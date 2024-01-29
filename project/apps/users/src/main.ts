@@ -4,6 +4,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app/app.module';
 
+const globalPrefix = process.env.PREFIX;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
@@ -12,7 +14,6 @@ async function bootstrap() {
   .setVersion('1.0')
   .build();
 
-  const globalPrefix = process.env.PREFIX;
   app.setGlobalPrefix(globalPrefix);
 
   const configService = app.get(ConfigService);
