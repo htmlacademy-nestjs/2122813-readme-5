@@ -7,6 +7,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { PostQuery } from './query/post.query';
 
 import { Post as BlogPostType } from '@prisma/client';
+import { SearchQuery } from './query/search.query';
 
 const entity = {
   [PostType.Video]: BlogPostVideoEntity,
@@ -37,6 +38,10 @@ export class BlogPostService {
 
   async getPosts(query: PostQuery): Promise<BlogPostType[]> {
     return this.blogPostRepository.find(query);
+  }
+
+  async getPostsBySearch(search: SearchQuery): Promise<BlogPostType[]> {
+    return this.blogPostRepository.search(search);
   }
 
   async updatePost(id: number, dto: UpdatePostDto): Promise<BlogPostType> {

@@ -14,6 +14,8 @@ CREATE TABLE "posts" (
     "author" TEXT DEFAULT '',
     "photo" TEXT DEFAULT '',
     "tags" TEXT[],
+    "is_repost" BOOLEAN NOT NULL DEFAULT false,
+    "is_published" BOOLEAN NOT NULL DEFAULT true,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "published_at" TIMESTAMP(3),
     "type" "PostType" NOT NULL,

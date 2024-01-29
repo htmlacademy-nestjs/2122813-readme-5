@@ -4,11 +4,11 @@ import { BlogPost } from './blog-post.entity';
 import { PrismaService } from '../prisma/prisma.service';
 import { PostQuery } from './query/post.query';
 import { Post as BlogPostType } from '@prisma/client';
+import { SearchQuery } from './query/search.query';
 
 @Injectable()
 export class BlogPostRepository implements CRUDRepository<BlogPost, number, BlogPostType> {
   constructor(private readonly prisma: PrismaService) {}
-
   public async create(item: BlogPost): Promise<BlogPostType> {
     const entityData = item.toObject();
     return this.prisma.post.create({
@@ -19,7 +19,8 @@ export class BlogPostRepository implements CRUDRepository<BlogPost, number, Blog
         },
       },
       include: {
-        comments: true
+        comments: true,
+        likes: true
       }
     });
   }
@@ -27,6 +28,21 @@ export class BlogPostRepository implements CRUDRepository<BlogPost, number, Blog
     await this.prisma.post.delete({
       where: {
         postId,
+      }
+    });
+  }
+
+  public search({ title, limit }: SearchQuery): Promise<BlogPostType[]> {
+    return this.prisma.post.findMany({
+      where: {
+        title: {
+          contains: title
+        },
+      },
+      take: limit,
+      include: {
+        comments: true,
+        likes: true
       }
     });
   }
@@ -43,25 +59,33 @@ export class BlogPostRepository implements CRUDRepository<BlogPost, number, Blog
     });
   }
 
-  public find({limit, userId, type, sortDirection, page}: PostQuery): Promise<BlogPostType[]> {
+  public find({limit, page, userId, type, sortDirection, sortBy, tag}: PostQuery): Promise<BlogPostType[]> {
+    const orderBy = sortBy !== 'createdAt'
+      ? { [sortBy]: { _count: sortDirection } }
+      : { [sortBy]: sortDirection };
+
+    const where = {
+      userId,
+      type,
+      isPublished: true,
+      tags: { has: tag }
+    };
+
+    if (!tag) {
+      delete where.tags;
+    }
+
     return this.prisma.post.findMany({
-      where: {
-        userId,
-        type,
-        publishAt: { not: null }
-      },
+      where,
       take: limit,
       include: {
         comments: true,
-        likes: true
+        likes: true,
       },
-      orderBy: [
-        { createdAt: sortDirection }
-      ],
+      orderBy,
       skip: page > 0 ? limit * (page - 1) : undefined,
     });
   }
-
   public update(id: number, item): Promise<BlogPostType> {
     return this.prisma.post.update({
       where: {

@@ -10,4 +10,5 @@ export class UpdatePostDto {
   public type: PostType;
   public publishAt?: Date;
   public userId: string;
+  public isPublished?: boolean;
 }

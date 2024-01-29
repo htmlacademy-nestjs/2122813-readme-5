@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "message": "Автомобили",
-  "postId": 1,
-  "userId": "1"
+  "postId": 3,
+  "userId": "10"
 }
 
 ###
