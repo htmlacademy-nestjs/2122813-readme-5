@@ -4,7 +4,7 @@ import { Comment } from '@project/shared/app-types';
 import { BlogCommentRepository } from './blog-comment.repository';
 import { Injectable, Logger } from '@nestjs/common';
 import { BlogCommentEntity } from './blog-comment.entity';
-import { PostQuery } from './query/comment.query';
+import { CommentQuery } from './query/comment.query';
 
 @Injectable()
 export class BlogCommentService {
@@ -25,7 +25,7 @@ export class BlogCommentService {
     return this.blogCommentRepository.findById(id);
   }
 
-  async getComments(query: PostQuery): Promise<Comment[]> {
+  async getComments(query: CommentQuery): Promise<Comment[]> {
     return this.blogCommentRepository.find(query);
   }
 

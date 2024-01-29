@@ -3,7 +3,7 @@ import { CRUDRepository } from '@project/util/util-types';
 import { BlogCommentEntity } from './blog-comment.entity';
 import { Comment } from '@project/shared/app-types';
 import { PrismaService } from '../prisma/prisma.service';
-import { PostQuery } from './query/comment.query';
+import { CommentQuery } from './query/comment.query';
 
 @Injectable()
 export class BlogCommentRepository implements CRUDRepository<BlogCommentEntity, number, Comment> {
@@ -31,7 +31,7 @@ export class BlogCommentRepository implements CRUDRepository<BlogCommentEntity, 
     });
   }
 
-  public find({limit, postId, sortDirection, page}: PostQuery): Promise<Comment[]> {
+  public find({limit, postId, sortDirection, page}: CommentQuery): Promise<Comment[]> {
     return this.prisma.comment.findMany({
       where: {
         postId
