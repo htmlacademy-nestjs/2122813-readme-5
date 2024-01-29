@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Req, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards, Logger } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BlogPostService } from './blog-post.service';
 import { fillObject } from '@project/util/util-core';
@@ -8,6 +8,10 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { PostQuery } from './query/post.query';
 import { SearchQuery } from './query/search.query';
 import { PostMessages } from './blog-post.constant';
+import { CreatePostValidationPipe } from './pipes/create-post-validation.pipe';
+import { UpdatePostValidationPipe } from './pipes/update-post-validation.pipe';
+import { JwtAuthGuard } from '@project/util/util-core';
+import { RequestWithTokenPayload } from '@project/shared/app-types';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -15,8 +19,6 @@ export class BlogPostController {
   constructor(
     private readonly blogPostService: BlogPostService
   ) {}
-
-
   @ApiResponse({
     status: HttpStatus.OK,
     description: PostMessages.Search
@@ -26,7 +28,6 @@ export class BlogPostController {
     const posts = await this.blogPostService.getPostsBySearch(query);
     return fillObject(PostRdo, posts);
   }
-
   @ApiResponse({
     type: PostRdo,
     status: HttpStatus.OK,
@@ -39,6 +40,7 @@ export class BlogPostController {
   }
 
   @ApiResponse({
+    type: PostRdo,
     status: HttpStatus.OK,
     description: PostMessages.ShowAll
   })
@@ -49,17 +51,13 @@ export class BlogPostController {
   }
 
   @ApiResponse({
+    type: PostRdo,
     status: HttpStatus.OK,
     description: PostMessages.Add
   })
+  @UseGuards(JwtAuthGuard)
   @Post('/')
-  async create(@Body() dto: CreatePostDto) {
-    const post = { ...dto }
-    if (dto.postId && !dto.isRepost) {
-      post.originPostId = dto.postId
-      post.originUserId = dto.userId
-      post.isRepost = true
-    }
+  async create(@Req() { user }: RequestWithTokenPayload, @Body(CreatePostValidationPipe) dto: CreatePostDto) {
     const newPost = await this.blogPostService.createPost(dto);
     return fillObject(PostRdo, newPost);
   }
@@ -75,16 +73,18 @@ export class BlogPostController {
   }
 
   @ApiResponse({
+    type: PostRdo,
     status: HttpStatus.OK,
     description: PostMessages.Update
   })
   @Patch('/:id')
-  async update(@Param('id') id: number, @Body() dto: UpdatePostDto) {
+  async update(@Param('id') id: number, @Body(UpdatePostValidationPipe) dto: UpdatePostDto) {
     const updatedPost = await this.blogPostService.updatePost(id, dto);
     return fillObject(PostRdo, updatedPost);
   }
 
   @ApiResponse({
+    type: PostRdo,
     status: HttpStatus.OK,
     description: PostMessages.Update
   })
@@ -95,6 +95,7 @@ export class BlogPostController {
   }
 
   @ApiResponse({
+    type: PostRdo,
     status: HttpStatus.OK,
     description: PostMessages.Update
   })

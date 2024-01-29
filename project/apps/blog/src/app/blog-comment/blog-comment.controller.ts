@@ -7,6 +7,8 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { CommentQuery } from './query/comment.query';
 import { CommentsMessages } from './blog-comment.constant';
+import { CreateCommentValidationPipe } from './pipes/create-comment-validation.pipe';
+import { UpdateCommentValidationPipe } from './pipes/update-comment-validation.pipe';
 
 @ApiTags('comments')
 @Controller('comments')
@@ -16,6 +18,7 @@ export class BlogCommentController {
   ) {}
 
   @ApiResponse({
+    type: CommentRdo,
     status: HttpStatus.OK,
     description: CommentsMessages.Show
   })
@@ -26,6 +29,7 @@ export class BlogCommentController {
   }
 
   @ApiResponse({
+    type: CommentRdo,
     status: HttpStatus.OK,
     description: CommentsMessages.ShowAll
   })
@@ -36,15 +40,15 @@ export class BlogCommentController {
   }
 
   @ApiResponse({
+    type: CommentRdo,
     status: HttpStatus.CREATED,
     description: CommentsMessages.Add
   })
   @Post('/')
-  async create(@Body() dto: CreateCommentDto) {
+  async create(@Body(CreateCommentValidationPipe) dto: CreateCommentDto) {
     const newComment = await this.blogCommentService.createComment(dto);
     return fillObject(CommentRdo, newComment);
   }
-
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: CommentsMessages.Remove
@@ -56,11 +60,12 @@ export class BlogCommentController {
   }
 
   @ApiResponse({
+    type: CommentRdo,
     status: HttpStatus.OK,
     description: CommentsMessages.Update
   })
   @Patch('/:id')
-  async update(@Param('id') id: number, @Body() dto: UpdateCommentDto) {
+  async update(@Param('id') id: number, @Body(UpdateCommentValidationPipe) dto: UpdateCommentDto) {
     const updatedComment = await this.blogCommentService.updateComment(id, dto);
     return fillObject(CommentRdo, updatedComment);
   }

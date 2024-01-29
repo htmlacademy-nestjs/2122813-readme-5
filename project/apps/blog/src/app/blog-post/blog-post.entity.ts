@@ -1,6 +1,5 @@
 import { Entity } from '@project/util/util-types';
 import { PostType, PostBase, Post, Comment, PostVideo, PostPhoto, PostLink, PostQuote, PostText } from '@project/shared/app-types';
-
 export class BlogPostEntity implements Entity<BlogPostEntity>, PostBase {
   public id?: number;
   public userId: string;
@@ -13,11 +12,9 @@ export class BlogPostEntity implements Entity<BlogPostEntity>, PostBase {
   public createdAt: Date;
   public isRepost?: boolean;
   public isPublished?: boolean;
-
   constructor(post: Post) {
     this.fillEntity(post);
   }
-
   public fillEntity(entity: Post): void {
     this.id = entity.id;
     this.originPostId = entity.originPostId;
@@ -48,22 +45,11 @@ export class BlogPostVideoEntity extends BlogPostEntity implements Entity<BlogPo
   }
 
   public fillEntity(entity: PostVideo): void {
-    this.id = entity.id;
+    super.fillEntity(entity);
     this.title = entity.title;
     this.link = entity.link;
-    this.type = entity.type;
-    this.id = entity.id;
-    this.type = entity.type;
-    this.userId = entity.userId;
-    this.originPostId = entity.originPostId;
-    this.originUserId = entity.originUserId;
-    this.isRepost = entity.isRepost;
-    this.isPublished = entity.isPublished;
-    this.tags = entity.tags ?? [];
-    this.comments = entity.comments ?? [];
-    this.publishAt = entity.publishAt ? new Date(entity.publishAt) : new Date();
-    this.createdAt = entity.createdAt ? new Date(entity.createdAt) : new Date();
   }
+
   public toObject(): BlogPostVideoEntity {
     return {
       ...this,
@@ -80,23 +66,14 @@ export class BlogPostTextEntity extends BlogPostEntity implements Entity<BlogPos
     super(post);
     this.fillEntity(post);
   }
+
   public fillEntity(entity: PostText): void {
+    super.fillEntity(entity);
     this.title = entity.title;
     this.announce = entity.announce;
     this.description = entity.description;
-    this.type = entity.type;
-    this.id = entity.id;
-    this.type = entity.type;
-    this.userId = entity.userId;
-    this.originPostId = entity.originPostId;
-    this.originUserId = entity.originUserId;
-    this.isRepost = entity.isRepost;
-    this.isPublished = entity.isPublished;
-    this.tags = entity.tags ?? [];
-    this.comments = entity.comments ?? [];
-    this.publishAt = entity.publishAt ? new Date(entity.publishAt) : new Date();
-    this.createdAt = entity.createdAt ? new Date(entity.createdAt) : new Date();
   }
+
   public toObject(): BlogPostTextEntity {
     return {
       ...this,
@@ -112,22 +89,13 @@ export class BlogPostQuoteEntity extends BlogPostEntity implements Entity<BlogPo
     super(post);
     this.fillEntity(post);
   }
+
   public fillEntity(entity: PostQuote): void {
+    super.fillEntity(entity);
     this.author = entity.author;
     this.description = entity.description;
-    this.type = entity.type;
-    this.id = entity.id;
-    this.type = entity.type;
-    this.userId = entity.userId;
-    this.originPostId = entity.originPostId;
-    this.originUserId = entity.originUserId;
-    this.isRepost = entity.isRepost;
-    this.isPublished = entity.isPublished;
-    this.tags = entity.tags ?? [];
-    this.comments = entity.comments ?? [];
-    this.publishAt = entity.publishAt ? new Date(entity.publishAt) : new Date();
-    this.createdAt = entity.createdAt ? new Date(entity.createdAt) : new Date();
   }
+
   public toObject(): BlogPostQuoteEntity {
     return {
       ...this,
@@ -143,22 +111,13 @@ export class BlogPostLinkEntity extends BlogPostEntity implements Entity<BlogPos
     super(post);
     this.fillEntity(post);
   }
+
   public fillEntity(entity: PostLink): void {
+    super.fillEntity(entity);
     this.link = entity.link;
     this.description = entity.description;
-    this.type = entity.type;
-    this.id = entity.id;
-    this.type = entity.type;
-    this.userId = entity.userId;
-    this.originPostId = entity.originPostId;
-    this.originUserId = entity.originUserId;
-    this.isRepost = entity.isRepost;
-    this.isPublished = entity.isPublished;
-    this.tags = entity.tags ?? [];
-    this.comments = entity.comments ?? [];
-    this.publishAt = entity.publishAt ? new Date(entity.publishAt) : new Date();
-    this.createdAt = entity.createdAt ? new Date(entity.createdAt) : new Date();
   }
+
   public toObject(): BlogPostLinkEntity {
     return {
       ...this,
@@ -173,21 +132,12 @@ export class BlogPostPhotoEntity extends BlogPostEntity implements Entity<BlogPo
     super(post);
     this.fillEntity(post);
   }
+
   public fillEntity(entity: PostPhoto): void {
+    super.fillEntity(entity);
     this.photo = entity.photo;
-    this.type = entity.type;
-    this.id = entity.id;
-    this.type = entity.type;
-    this.userId = entity.userId;
-    this.originPostId = entity.originPostId;
-    this.originUserId = entity.originUserId;
-    this.isRepost = entity.isRepost;
-    this.isPublished = entity.isPublished;
-    this.tags = entity.tags ?? [];
-    this.comments = entity.comments ?? [];
-    this.publishAt = entity.publishAt ? new Date(entity.publishAt) : new Date();
-    this.createdAt = entity.createdAt ? new Date(entity.createdAt) : new Date();
   }
+
   public toObject(): BlogPostPhotoEntity {
     return {
       ...this,
@@ -195,4 +145,13 @@ export class BlogPostPhotoEntity extends BlogPostEntity implements Entity<BlogPo
     };
   }
 }
+
 export type BlogPost = BlogPostLinkEntity | BlogPostPhotoEntity | BlogPostQuoteEntity | BlogPostTextEntity | BlogPostVideoEntity;
+
+export const BlogEntity = {
+  [PostType.Video]: BlogPostVideoEntity,
+  [PostType.Text]: BlogPostTextEntity,
+  [PostType.Link]: BlogPostLinkEntity,
+  [PostType.Photo]: BlogPostPhotoEntity,
+  [PostType.Quote]: BlogPostQuoteEntity
+}

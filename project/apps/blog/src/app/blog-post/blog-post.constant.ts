@@ -11,3 +11,44 @@ export enum PostMessages {
   ShowAll = 'All posts',
   Show = 'Post by id'
 }
+
+export const RegExp = {
+  Video:/(?:(?:https?:\/\/)(?:www)?\.?(?:youtu\.?be)(?:\.com)?\/(?:.*[=/])*)([^= &?/\r\n]{8,11})/,
+  Tag:/^[A-Za-zА-Яа-я]([A-Za-zА-Яа-я0-9_.])+$/g,
+}
+
+export enum TagParam {
+  MinLength = 3,
+  MaxLength = 10,
+  MaxCount = 8
+}
+
+export enum PostError {
+  TagSpaces = 'Tags should not contain spaces',
+  TagStart = 'Tags should start with letter'
+}
+
+export enum TitleLength {
+  Min = 20,
+  Max = 50
+}
+
+export enum AnnounceLength {
+  Min = 50,
+  Max = 255
+}
+
+export enum DescriptionLength {
+  Min = 20,
+  Max = 300
+}
+
+export enum DescriptionTextPostLength {
+  Min = 100,
+  Max = 1024
+}
+
+export enum AuthorLength {
+  Min = 3,
+  Max = 50
+}

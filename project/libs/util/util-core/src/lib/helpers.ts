@@ -33,3 +33,7 @@ export function parseTime(time: string): TimeAndUnit {
 
   return { value, unit }
 }
+
+export function prepareTags(tags: string[]) {
+  return Array.from(new Set(tags.map((tag: string) => tag.trim().toLowerCase())))
+}

@@ -11,3 +11,5 @@ export * from './lib/refresh-token-payload.interface';
 export * from './lib/token.interface';
 export * from './lib/request-with-token-payload';
 export * from './lib/like.interface';
+export * from './lib/jwt-config.interface'
+export * from './lib/rabbit-config.interface'
