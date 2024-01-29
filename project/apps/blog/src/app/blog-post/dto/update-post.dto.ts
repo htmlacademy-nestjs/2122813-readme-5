@@ -3,13 +3,6 @@ import { ArrayMaxSize, IsDate, IsEnum, IsOptional, IsUrl, Matches, MaxLength, Mi
 import { PostType } from '@project/shared/app-types';
 import { PostError, RegExp, TagParam, TitleLength, AnnounceLength, DescriptionTextPostLength, AuthorLength, DescriptionLength } from '../blog-post.constant';
 export class UpdateBaseDto {
-  // @ApiProperty({
-  //   description: 'Post ID',
-  //   example: 3
-  // })
-  // @IsNumber()
-  // public postId: number;
-
   @ApiProperty({
     description: 'User ID',
     example: '3'
@@ -24,21 +17,6 @@ export class UpdateBaseDto {
   @IsEnum(PostType)
   @IsOptional()
   public type: string;
-
-  // @ApiProperty({
-  //   description: 'Origin user ID',
-  //   example: '3'
-  // })
-  // @IsOptional()
-  // public originUserId?: string;
-
-  // @ApiProperty({
-  //   description: 'Origin post ID',
-  //   example: 3
-  // })
-  // @IsNumber()
-  // @IsOptional()
-  // public originPostId?: number;
 
   @ApiProperty({
     description: 'Status of repost',

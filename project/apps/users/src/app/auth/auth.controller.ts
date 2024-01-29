@@ -2,7 +2,7 @@ import { Post, HttpCode, HttpStatus, Controller, Req, UseGuards } from '@nestjs/
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@project/util/util-core';
 import { NotifyService } from '../notify/notify.service';
 import { LocalAuthGuard } from './guards/local-auth-guard';
 import { RequestWithTokenPayload, RequestWithUser } from '@project/shared/app-types';

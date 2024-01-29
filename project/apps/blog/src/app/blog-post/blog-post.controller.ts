@@ -1,4 +1,4 @@
-import { Body, Req, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards, Logger } from '@nestjs/common';
+import { Body, Req, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BlogPostService } from './blog-post.service';
 import { fillObject } from '@project/util/util-core';
@@ -10,16 +10,15 @@ import { SearchQuery } from './query/search.query';
 import { PostMessages } from './blog-post.constant';
 import { CreatePostValidationPipe } from './pipes/create-post-validation.pipe';
 import { UpdatePostValidationPipe } from './pipes/update-post-validation.pipe';
-import { JwtAuthGuard } from '@project/util/util-core';
 import { RequestWithTokenPayload } from '@project/shared/app-types';
 import { BlogNotifyService } from '../blog-notify/blog-notify.service';
-
+import { CheckAuthGuard } from '../guards/check-auth.guard';
 @ApiTags('posts')
 @Controller('posts')
 export class BlogPostController {
   constructor(
     private readonly blogPostService: BlogPostService,
-    private readonly blogNotifyService: BlogNotifyService
+    private readonly blogNotifyService: BlogNotifyService,
   ) {}
   @ApiResponse({
     status: HttpStatus.OK,
@@ -30,18 +29,27 @@ export class BlogPostController {
     const posts = await this.blogPostService.getPostsBySearch(query);
     return fillObject(PostRdo, posts);
   }
-
   @ApiResponse({
     status: HttpStatus.OK,
     description: PostMessages.SendNews
   })
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(CheckAuthGuard)
   @Get('/news')
-  public async sendNews(@Req() {user}: RequestWithTokenPayload, @Query() query: PostQuery) {
-    Logger.log(user)
-    const { email, sub } = { email:'user4@notfound.local', sub: ' 64f53391170335607db66f7b' };
+  public async sendNews(@Req() { user }: RequestWithTokenPayload, @Query() query: PostQuery) {
+    const { email, sub } = user;
     const posts = await this.blogPostService.getPosts(query)
     this.blogNotifyService.sendNews({ email, posts, id:sub });
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: PostMessages.ShowUnpublished
+  })
+  @UseGuards(CheckAuthGuard)
+  @Get('/unpublished')
+  public async showUnpublishedPosts(@Req() { user }: RequestWithTokenPayload) {
+    const posts = await this.blogPostService.getUnpublishedPosts(user.sub)
+    return fillObject(PostRdo, posts);
   }
 
   @ApiResponse({
@@ -54,7 +62,6 @@ export class BlogPostController {
     const post = await this.blogPostService.getPost(id);
     return fillObject(PostRdo, post);
   }
-
   @ApiResponse({
     type: PostRdo,
     status: HttpStatus.OK,
@@ -65,27 +72,26 @@ export class BlogPostController {
     const posts = await this.blogPostService.getPosts(query);
     return fillObject(PostRdo, posts);
   }
-
   @ApiResponse({
     type: PostRdo,
     status: HttpStatus.OK,
     description: PostMessages.Add
   })
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(CheckAuthGuard)
   @Post('/')
   async create(@Req() { user }: RequestWithTokenPayload, @Body(CreatePostValidationPipe) dto: CreatePostDto) {
-    const newPost = await this.blogPostService.createPost(dto);
+    const newPost = await this.blogPostService.createPost(dto, user.sub);
     return fillObject(PostRdo, newPost);
   }
-
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: PostMessages.Remove
   })
+  @UseGuards(CheckAuthGuard)
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async destroy(@Param('id') id: number) {
-    this.blogPostService.deletePost(id);
+  async destroy(@Req() { user }: RequestWithTokenPayload, @Param('id') id: number) {
+    this.blogPostService.deletePost(id, user.sub);
   }
 
   @ApiResponse({
@@ -93,9 +99,10 @@ export class BlogPostController {
     status: HttpStatus.OK,
     description: PostMessages.Update
   })
+  @UseGuards(CheckAuthGuard)
   @Patch('/:id')
-  async update(@Param('id') id: number, @Body(UpdatePostValidationPipe) dto: UpdatePostDto) {
-    const updatedPost = await this.blogPostService.updatePost(id, dto);
+  async update(@Req() { user }: RequestWithTokenPayload, @Param('id') id: number, @Body(UpdatePostValidationPipe) dto: UpdatePostDto) {
+    const updatedPost = await this.blogPostService.updatePost(id, dto, user.sub);
     return fillObject(PostRdo, updatedPost);
   }
 
@@ -104,9 +111,10 @@ export class BlogPostController {
     status: HttpStatus.OK,
     description: PostMessages.Update
   })
+  @UseGuards(CheckAuthGuard)
   @Patch('/publish/:id')
-  async publish(@Param('id') id: number, @Body() dto: UpdatePostDto) {
-    const updatedPost = await this.blogPostService.updatePost(id, { ...dto, isPublished: true, publishAt: new Date() });
+  async publish(@Req() { user }: RequestWithTokenPayload, @Param('id') id: number, @Body() dto: UpdatePostDto) {
+    const updatedPost = await this.blogPostService.updatePost(id, { ...dto, isPublished: true, publishAt: new Date() }, user.sub);
     return fillObject(PostRdo, updatedPost);
   }
 
@@ -115,9 +123,10 @@ export class BlogPostController {
     status: HttpStatus.OK,
     description: PostMessages.Update
   })
+  @UseGuards(CheckAuthGuard)
   @Patch('/unpublish/:id')
-  async unpublish(@Param('id') id: number, @Body() dto: UpdatePostDto) {
-    const updatedPost = await this.blogPostService.updatePost(id, { ...dto, isPublished: false, publishAt: null });
+  async unpublish(@Req() { user }: RequestWithTokenPayload, @Param('id') id: number, @Body() dto: UpdatePostDto) {
+    const updatedPost = await this.blogPostService.updatePost(id, { ...dto, isPublished: false, publishAt: null }, user.sub);
     return fillObject(PostRdo, updatedPost);
   }
 }

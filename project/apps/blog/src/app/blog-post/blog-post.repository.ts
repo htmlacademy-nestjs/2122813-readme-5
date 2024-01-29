@@ -59,6 +59,19 @@ export class BlogPostRepository implements CRUDRepository<BlogPost, number, Blog
     });
   }
 
+  public findUnpublishedPosts(userId: string): Promise<BlogPostType[]> {
+    return this.prisma.post.findMany({
+      where: {
+        userId,
+        isPublished: false
+      },
+      include: {
+        comments: true,
+        likes: true,
+      },
+    })
+  }
+
   public find({limit, page, userId, type, sortDirection, sortBy, tag}: PostQuery): Promise<BlogPostType[]> {
     const orderBy = sortBy !== 'createdAt'
       ? { [sortBy]: { _count: sortDirection } }

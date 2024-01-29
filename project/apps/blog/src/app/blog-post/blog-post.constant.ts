@@ -9,6 +9,7 @@ export enum PostMessages {
   Remove = 'Post removed',
   Update = 'Post updated',
   ShowAll = 'All posts',
+  ShowUnpublished = 'All unpublished posts',
   Show = 'Post by id',
   SendNews = 'News'
 }

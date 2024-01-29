@@ -22,7 +22,7 @@ export class LikesService {
 
   public async changePostLike(postId: number, userId: string) {
     const like = await this.findByUserAndPostId(postId, userId)
-    if(!like){
+    if(!like) {
       return await this.create(postId, userId)
     }
     return this.likeRepository.destroy(like.likeId);

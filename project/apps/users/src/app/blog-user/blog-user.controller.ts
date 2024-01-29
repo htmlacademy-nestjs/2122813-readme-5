@@ -5,7 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { fillObject } from '@project/util/util-core';
 import { UserRdo } from './rdo/user.rdo';
 import { MongoidValidationPipe } from '@project/shared/shared-pipes';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@project/util/util-core';
 import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('users')

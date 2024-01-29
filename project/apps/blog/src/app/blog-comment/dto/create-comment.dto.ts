@@ -17,11 +17,4 @@ export class CreateCommentDto {
   })
   @IsInt()
   public postId: number;
-
-  @ApiProperty({
-    description: 'User ID',
-    example: '1'
-  })
-  @IsString()
-  public userId: string;
 }

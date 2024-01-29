@@ -68,12 +68,11 @@ async function fillDb() {
 
   console.info('🤘️ Database was filled')
 }
+
 fillDb()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
   .catch(async (err) => {
     console.error(err);
+  })
+  .finally(async () => {
     await prisma.$disconnect()
-    // process.exit(1);
   })

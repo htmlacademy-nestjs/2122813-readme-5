@@ -1,9 +1,11 @@
-import { Body, Controller, HttpStatus, Param, Post, Get } from '@nestjs/common';
+import { Req, Controller, HttpStatus, Param, Post, Get, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LikesService } from './blog-like.service';
 import { fillObject } from '@project/util/util-core';
 import { LikeRdo } from './rdo/blog-like.rdo';
 import { LikesMessages } from './blog-like.constant';
+import { CheckAuthGuard } from '../guards/check-auth.guard';
+import { RequestWithTokenPayload } from '@project/shared/app-types';
 
 @ApiTags('likes')
 @Controller('likes')
@@ -11,14 +13,14 @@ export class LikesController {
   constructor(
     private readonly likesService: LikesService,
   ) {}
-
   @ApiResponse({
     status: HttpStatus.OK,
     description: LikesMessages.Add
   })
+  @UseGuards(CheckAuthGuard)
   @Post('/:postId')
-  public async changeLikeStatus(@Param('postId') id: number, @Body('userId') userId: string) {
-    const newLike = await this.likesService.changePostLike(id, userId);
+  public async changeLikeStatus(@Param('postId') id: number, @Req() { user }: RequestWithTokenPayload ) {
+    const newLike = await this.likesService.changePostLike(id, user.sub);
     return fillObject(LikeRdo, newLike);
   }
 

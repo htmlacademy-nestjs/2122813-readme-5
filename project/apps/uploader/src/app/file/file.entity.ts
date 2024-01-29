@@ -13,7 +13,7 @@ export class FileEntity implements Entity<FileEntity>, File {
     this.fillEntity(file);
   }
 
-  public fillEntity(entity) {
+  public fillEntity(entity: File) {
     this.id = entity.id;
     this.hashName = entity.hashName;
     this.mimetype = entity.mimetype;
