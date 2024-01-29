@@ -5,6 +5,7 @@ import { BlogPostService } from './blog-post.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { JwtAccessStrategy, getJwtOptions } from '@project/util/util-core';
+import { BlogNotifyModule } from "../blog-notify/blog-notify.module";
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { JwtAccessStrategy, getJwtOptions } from '@project/util/util-core';
       inject: [ConfigService],
       useFactory: getJwtOptions,
     }),
+    BlogNotifyModule
   ],
   controllers: [BlogPostController],
   providers: [BlogPostService, BlogPostRepository, JwtAccessStrategy],

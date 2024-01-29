@@ -9,7 +9,8 @@ export enum PostMessages {
   Remove = 'Post removed',
   Update = 'Post updated',
   ShowAll = 'All posts',
-  Show = 'Post by id'
+  Show = 'Post by id',
+  SendNews = 'News'
 }
 
 export const RegExp = {

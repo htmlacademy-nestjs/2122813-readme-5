@@ -6,6 +6,7 @@ export class EmailSubscriberEntity implements Entity<EmailSubscriberEntity>, Sub
   public email: string;
   public name: string;
   public userId: string;
+  public dateNotify?: string;
 
   constructor(emailSubscriber: Subscriber) {
     this.fillEntity(emailSubscriber);
@@ -15,6 +16,7 @@ export class EmailSubscriberEntity implements Entity<EmailSubscriberEntity>, Sub
     this.email = entity.email;
     this.name = entity.name;
     this.id = entity.id;
+    this.dateNotify = entity.dateNotify;
   }
 
   public toObject(): EmailSubscriberEntity {
