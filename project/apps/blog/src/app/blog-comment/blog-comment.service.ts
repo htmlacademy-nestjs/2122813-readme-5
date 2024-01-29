@@ -2,7 +2,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from '@project/shared/app-types';
 import { BlogCommentRepository } from './blog-comment.repository';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BlogCommentEntity } from './blog-comment.entity';
 import { CommentQuery } from './query/comment.query';
 
@@ -30,7 +30,6 @@ export class BlogCommentService {
   }
 
   async updateComment(id: number, dto: UpdateCommentDto): Promise<Comment> {
-    Logger.log(new BlogCommentEntity(dto))
     return this.blogCommentRepository.update(id, new BlogCommentEntity(dto));
   }
 }

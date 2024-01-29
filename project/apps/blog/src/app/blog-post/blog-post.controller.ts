@@ -54,6 +54,12 @@ export class BlogPostController {
   })
   @Post('/')
   async create(@Body() dto: CreatePostDto) {
+    const post = { ...dto }
+    if (dto.postId && !dto.isRepost) {
+      post.originPostId = dto.postId
+      post.originUserId = dto.userId
+      post.isRepost = true
+    }
     const newPost = await this.blogPostService.createPost(dto);
     return fillObject(PostRdo, newPost);
   }

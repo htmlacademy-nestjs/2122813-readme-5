@@ -9,6 +9,10 @@ export interface PostBase {
   tags?: string[];
   createdAt?: Date;
   publishAt?: Date;
+  originPostId?: number;
+  originUserId?: string;
+  isRepost?: boolean;
+  isPublished?: boolean;
 }
 export interface PostVideo extends PostBase {
   title: string;

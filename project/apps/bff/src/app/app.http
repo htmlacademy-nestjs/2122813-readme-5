@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
   "title": "Проверка",
-  "type": 1
+  "type": "text"
 }
 
 ###

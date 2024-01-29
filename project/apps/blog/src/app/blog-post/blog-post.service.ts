@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BlogPostRepository } from './blog-post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostType } from '@project/shared/app-types';
@@ -23,7 +23,6 @@ export class BlogPostService {
   ) {}
 
   async createPost(dto: CreatePostDto): Promise<BlogPostType> {
-    Logger.log(dto);
     const postEntity = new entity[dto.type]({ ...dto, comments: [] });
     return this.blogPostRepository.create(postEntity);
   }

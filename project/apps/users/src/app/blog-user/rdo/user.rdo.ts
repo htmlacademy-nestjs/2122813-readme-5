@@ -31,4 +31,11 @@ export class UserRdo {
   })
   @Expose()
   public name: string;
+
+  @ApiProperty({
+    description: 'Created date',
+    example: '2023-09-01'
+  })
+  @Expose()
+  public createdAt: string;
 }
