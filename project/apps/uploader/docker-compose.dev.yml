@@ -1,15 +1,15 @@
 
-version: '3.9'
+version: '3.5'
 services:
   project.uploader.mongo:
-    image: mongo:4.4
+    image: mongo
     restart: always
     container_name: project.uploader.mongo
 
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DB}
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: test
+      MONGO_INITDB_DATABASE: project-uploader
 
     ports:
       - 27018:27017
@@ -24,11 +24,11 @@ services:
       retries: 5
 
   project.uploader.mongo.ui:
-    image: mongo-express:1.0-20
+    image: mongo-express
     restart: always
     container_name: project.uploader.mongo.ui
     ports:
-      - 8083:8081
+      - 8082:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: test
