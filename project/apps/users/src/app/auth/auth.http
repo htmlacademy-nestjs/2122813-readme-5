@@ -1,27 +1,11 @@
-# Create a new user
-POST http://localhost:3001/api/auth/register HTTP/1.1
-Content-Type: application/json
-
-{
-  "email": "user@notfound.ru",
-  "name": "Keks",
-  "password": "123456"
-}
-
-###
-
-# Get user by ID
-GET http://localhost:3001/api/auth/6582d13b839eca516d695a99 HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU2ZWRlZmVmN2VmNWEwNWIzZDY4NjMiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImF2YXRhciI6IiIsImlhdCI6MTY5MzA1ODUxNCwiZXhwIjoxNjkzMDU5MTE0fQ.FLY1FC0tF0OFHKNA2yF6bnPNzK1RZH8cKzlDmh-xz40
-
-###
-
+@token={{login.response.body.accessToken}}
+# @name login
 # Login user by email and password
 POST http://localhost:3001/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.ru",
+  "email": "user4@notfound.local",
   "password": "123456"
 }
 
@@ -29,11 +13,12 @@ Content-Type: application/json
 
 # Get new JWT pair
 POST http://localhost:3001/api/auth/refresh HTTP/1.1
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU2ZWRlZmVmN2VmNWEwNWIzZDY4NjMiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImF2YXRhciI6IiIsInRva2VuSWQiOiJjZTY3MjJmZi0xY2M3LTQwODItOTc5My00Y2JjY2Q2YjY0MGYiLCJpYXQiOjE2OTMwNTg2NDIsImV4cCI6MTY5NTY1MDY0Mn0.jEZg65eKC6VslLfVj6_jTSyNH_TpWcjwmZGSS09rcqM
+Authorization: Bearer {{token}}
 
 ###
+
 # Check user token
 POST http://localhost:3001/api/auth/check HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGU2ZWRlZmVmN2VmNWEwNWIzZDY4NjMiLCJlbWFpbCI6InVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImF2YXRhciI6IiIsImlhdCI6MTY5MzA1OTUxMCwiZXhwIjoxNjkzMDYwMTEwfQ.UL9tTERyrwbSNMcKwFpg08TiZ8ogNE2SPM8KtFf_8I4
+Authorization: Bearer {{token}}
 
 ###

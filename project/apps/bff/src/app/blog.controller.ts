@@ -3,7 +3,7 @@ import { CheckAuthGuard } from './guards/check-auth.guard';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { AddNewPostDto } from './dto/add-new-post.dto';
 import { HttpService } from '@nestjs/axios';
-import { ApplicationServiceURL } from './app.config';
+import { ApplicationServiceURL } from './app.constant';
 import { UseridInterceptor } from './interceptors/userid.interceptor';
 
 @Controller('blog')

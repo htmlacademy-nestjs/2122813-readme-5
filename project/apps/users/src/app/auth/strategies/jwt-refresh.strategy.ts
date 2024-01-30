@@ -5,6 +5,7 @@ import { ConfigType } from '@nestjs/config';
 import { jwtConfig } from '@project/config/config-users';
 import { RefreshTokenPayload } from '@project/shared/app-types';
 import { AuthService } from '../auth.service';
+import { BlogUserService } from '../../blog-user/blog-user.service';
 import { RefreshTokenService } from '../../refresh-token/refresh-token.service';
 import { TokenNotExistsException } from '../exceptions/token-not-exists.exception';
 
@@ -13,6 +14,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
   constructor(
     @Inject(jwtConfig.KEY) private readonly jwtOptions: ConfigType<typeof jwtConfig>,
     private readonly authService: AuthService,
+    private readonly blogUserService: BlogUserService,
     private readonly refreshTokenService: RefreshTokenService,
   ) {
     super({
@@ -28,6 +30,6 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
 
     await this.refreshTokenService.deleteRefreshSession(payload.tokenId);
     await this.refreshTokenService.deleteExpiredRefreshTokens();
-    return this.authService.getUser(payload.sub);
+    return this.blogUserService.getUser(payload.sub);
   }
 }

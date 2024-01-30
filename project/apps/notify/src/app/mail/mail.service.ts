@@ -1,9 +1,10 @@
 import { Subscriber } from '@project/shared/app-types';
 import { Inject, Injectable } from '@nestjs/common';
-import { EMAIL_ADD_SUBSCRIBER_SUBJECT } from './mail.constant';
+import { EmailSubject } from './mail.constant';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigType } from '@nestjs/config';
 import { notifyConfig } from '@project/config/config-notify';
+import { Post } from '@prisma/client';
 
 @Injectable()
 export class MailService {
@@ -18,11 +19,23 @@ export class MailService {
     await this.mailerService.sendMail({
       from: this.serviceConfig.mail.from,
       to: subscriber.email,
-      subject: EMAIL_ADD_SUBSCRIBER_SUBJECT,
+      subject: EmailSubject.EmailAddSubscriberSubject,
       template: './add-subscriber',
       context: {
         user: `${subscriber.name}`,
         email: `${subscriber.email}`,
+      }
+    })
+  }
+
+  public async sendNotify(email: string, posts: Post[]) {
+    await this.mailerService.sendMail({
+      from: this.serviceConfig.mail.from,
+      to: email,
+      subject: EmailSubject.EmailNotifySubject,
+      template: './news',
+      context: {
+        posts
       }
     })
   }

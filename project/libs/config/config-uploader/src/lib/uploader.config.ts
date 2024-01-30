@@ -1,9 +1,6 @@
 import { registerAs } from '@nestjs/config';
 import * as Joi from 'joi';
 
-const DEFAULT_PORT = 3000;
-const DEFAULT_MONGO_PORT = 27017;
-
 export interface UploaderConfig {
   serveRoot?: string;
   environment?: string;
@@ -24,10 +21,10 @@ export default registerAs('application', (): UploaderConfig => {
     serveRoot: process.env['SERVE_ROOT'],
     environment: process.env['NODE_ENV'],
     uploadDirectory: process.env['UPLOAD_DIRECTORY_PATH'],
-    port: parseInt(process.env['PORT'] || DEFAULT_PORT.toString(), 10),
+    port: parseInt(process.env['PORT'] as string),
     db: {
       host: process.env['MONGO_HOST'],
-      port: parseInt(process.env['MONGO_PORT'] ?? DEFAULT_MONGO_PORT.toString(), 10),
+      port: parseInt(process.env['MONGO_PORT'] as string),
       name: process.env['MONGO_DB'],
       user: process.env['MONGO_USER'],
       password: process.env['MONGO_PASSWORD'],
@@ -39,9 +36,7 @@ export default registerAs('application', (): UploaderConfig => {
     serveRoot: Joi.string().required(),
     environment: Joi.string()
       .valid('development', 'production', 'stage'),
-    port: Joi.number()
-      .port()
-      .default(DEFAULT_PORT),
+    port: Joi.number().port(),
     uploadDirectory: Joi.string(),
     db: Joi.object({
       host: Joi.string().valid().hostname(),

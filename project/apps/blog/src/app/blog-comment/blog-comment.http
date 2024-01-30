@@ -1,0 +1,51 @@
+@token={{login.response.body.accessToken}}
+# @name login
+# Login user by email and password
+POST http://localhost:3001/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "user4@notfound.local",
+  "password": "123456"
+}
+
+###
+
+# Create a new comment
+POST http://localhost:3005/api/comments HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "message": "Автомобили",
+  "postId": 10,
+}
+
+###
+
+# Delete comment by id
+DELETE http://localhost:3005/api/comments/3 HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+# Get comments by post id
+GET http://localhost:3005/api/comments?sortDirection=desc&postId=2&limit=50&page=1 HTTP/1.1
+
+###
+
+# Get comment by id
+GET http://localhost:3005/api/comments/2 HTTP/1.1
+
+###
+
+# Update the comment by id
+PATCH http://localhost:3005/api/comments/5 HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "message": "Другой комментарий"
+}
+
+###

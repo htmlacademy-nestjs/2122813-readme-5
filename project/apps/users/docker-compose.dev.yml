@@ -1,7 +1,7 @@
-version: '3.9'
+version: '3.5'
 services:
   project.users.mongo:
-    image: mongo:4.4
+    image: mongo
     restart: always
     container_name: project.users.mongo
 
