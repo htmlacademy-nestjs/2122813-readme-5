@@ -20,7 +20,7 @@ docker compose -f ./apps/uploader/docker-compose.dev.yml --project-name "project
 
 - Сервис users 
 ```
-docker compose -f ./apps/users/docker-compose.dev.yml --project-name "project-users" up -d
+docker compose -f ./apps/users/docker-compose.dev.yml --project-name "project" up -d
 ```
 
 ## Переменные окружения
@@ -28,8 +28,8 @@ docker compose -f ./apps/users/docker-compose.dev.yml --project-name "project-us
 Файлы с переменными окружения
 - Сервис blog `project/apps/blog/.blog.env`
 - Сервис notify `project/apps/notify/.notify.env`
-- Сервис uploader `project/apps/uploader/.uploader.env`
-- Сервис users `project/apps/users/.users.env`
+- Сервис uploader `project/apps/uploader/uploader.env`
+- Сервис users `project/apps/users/users.env`
 
 Для подключения к базе данных сервиса blog переменные окружения в файле `project/libs/models/prisma/.env`
 
